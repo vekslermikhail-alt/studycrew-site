@@ -14,18 +14,23 @@ export function LegalPage({ title, updated, ru, en, enTitle }) {
     <>
       <header className="hdr is-scrolled">
         <div className="wrap hdr__in">
-          <Link href="/" className="brand" aria-label="StudyCrew — на главную">
+          <Link href="/ru" className="brand" aria-label="StudyCrew — на главную">
             <img src="/logo.png" alt="" width="36" height="36" />
             <span>StudyCrew</span>
           </Link>
           <nav className="hdr__nav legal__nav" aria-label="Юридические страницы">
             {LEGAL_LINKS.map(([href, label]) => <Link key={href} href={href}>{label}</Link>)}
           </nav>
+          {/* Английский оригинал уже на этой же странице — EN ведёт к нему. */}
+          <div className="lang lang--legal" role="group" aria-label="Язык / Language">
+            <span className="is-on" aria-current="page" lang="ru">RU</span>
+            <a href="#en" hrefLang="en" lang="en">EN</a>
+          </div>
         </div>
       </header>
       <main className="legal">
         <div className="wrap wrap--narrow">
-          <Link href="/" className="legal__back">← На главную</Link>
+          <Link href="/ru" className="legal__back">← На главную</Link>
           <article className="legal__doc" lang="ru">
             <h1>{title}</h1>
             <p className="legal__meta">Обновлено: {updated} · <a href="#en">English version ↓</a></p>
@@ -42,7 +47,7 @@ export function LegalPage({ title, updated, ru, en, enTitle }) {
       <footer className="ftr">
         <div className="wrap ftr__in">
           <div className="ftr__brand">
-            <Link href="/" className="brand"><img src="/logo.png" alt="" width="36" height="36" /><span>StudyCrew</span></Link>
+            <Link href="/ru" className="brand"><img src="/logo.png" alt="" width="36" height="36" /><span>StudyCrew</span></Link>
             <p>Учиться вместе — интереснее.</p>
           </div>
           <nav className="ftr__nav" aria-label="Юридические страницы в подвале">

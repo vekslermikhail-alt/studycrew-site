@@ -1,5 +1,5 @@
-import { LegalPage } from '../../components/LegalPage.jsx';
-import { CONTACT_EMAIL } from '../../config.js';
+import { LegalPage } from '../../../components/LegalPage.jsx';
+import { CONTACT_EMAIL } from '../../../config.js';
 
 export const metadata = {
   title: 'Правила сообщества — StudyCrew',

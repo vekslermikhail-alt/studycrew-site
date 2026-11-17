@@ -1,4 +1,7 @@
+'use client';
+
 import { Users, Timer, MessageCircle, User } from 'lucide-react';
+import { useT } from './i18n/index.js';
 
 /** Рамка телефона для концептуальных мокапов интерфейса. */
 export function Phone({ children, tab = 'groups', className = '', label, hideTabs = false }) {
@@ -27,19 +30,20 @@ function StatusBar() {
 }
 
 const TABS = [
-  { id: 'groups', label: 'Группы', Icon: Users },
-  { id: 'focus', label: 'Фокус', Icon: Timer },
-  { id: 'friends', label: 'Друзья', Icon: MessageCircle },
-  { id: 'profile', label: 'Профиль', Icon: User },
+  { id: 'groups', Icon: Users },
+  { id: 'focus', Icon: Timer },
+  { id: 'friends', Icon: MessageCircle },
+  { id: 'profile', Icon: User },
 ];
 
 function TabBar({ active }) {
+  const { phone } = useT();
   return (
     <nav className="phone__tabs" aria-hidden="true">
-      {TABS.map(({ id, label, Icon }) => (
+      {TABS.map(({ id, Icon }) => (
         <span key={id} className={id === active ? 'is-active' : ''}>
           <Icon size={18} strokeWidth={2.2} />
-          {label}
+          {phone.tabs[id]}
         </span>
       ))}
     </nav>

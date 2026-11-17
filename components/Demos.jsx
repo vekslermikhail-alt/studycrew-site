@@ -3,17 +3,19 @@
 import { useEffect, useRef, useState } from 'react';
 import { Play, Pause, RotateCcw, Snowflake, Flame, Check, EyeOff, Award, Star, Zap } from 'lucide-react';
 import { Coin } from './Phone.jsx';
+import { useT } from './i18n/index.js';
 
 /* =========================================================
    Демо таймера фокуса: время засчитывается, только пока
    «приложение» открыто (вкладка видима).
    ========================================================= */
-const SUBJECTS = ['Алгебра', 'Физика', 'Английский', 'История', 'Химия'];
 const DEMO_SECONDS = 15; // любая сессия в демо длится ~15 секунд
 
 export function FocusDemo() {
+  const { demos: { focus: t } } = useT();
   const [minutes, setMinutes] = useState(45);
-  const [subject, setSubject] = useState('Алгебра');
+  const [subjectIdx, setSubjectIdx] = useState(0); // индекс в t.subjects
+  const subject = t.subjects[subjectIdx];
   const [phase, setPhase] = useState('idle'); // idle | running | paused | away | done
   const [elapsed, setElapsed] = useState(0); // засчитанные минуты (float)
   const phaseRef = useRef(phase);
@@ -51,8 +53,8 @@ export function FocusDemo() {
   return (
     <div className="demo demo--focus">
       <div className="demo__head">
-        <span className="demo__tag">Попробуй</span>
-        <span className="demo__note">демо ускорено: сессия идёт ~15 секунд</span>
+        <span className="demo__tag">{t.tag}</span>
+        <span className="demo__note">{t.note}</span>
       </div>
 
       <div className="fd">
@@ -67,16 +69,16 @@ export function FocusDemo() {
           </svg>
           <div className="ring__label" aria-live="polite">
             {phase === 'done' ? (
-              <><strong className="ok"><Check size={30} /></strong><span>засчитано</span></>
+              <><strong className="ok"><Check size={30} /></strong><span>{t.counted}</span></>
             ) : (
-              <><strong>{Math.ceil(left)}</strong><span>мин осталось</span></>
+              <><strong>{Math.ceil(left)}</strong><span>{t.minLeft}</span></>
             )}
           </div>
         </div>
 
         <div className="fd__controls">
           <label className="fd__label" htmlFor="fd-min">
-            Длительность <b>{minutes} мин</b>
+            {t.duration} <b>{minutes} {t.min}</b>
           </label>
           <input
             id="fd-min" type="range" min="5" max="180" step="5"
@@ -86,49 +88,54 @@ export function FocusDemo() {
           />
           <div className="fd__scale"><span>5</span><span>180</span></div>
 
-          <p className="fd__label">Предмет</p>
-          <div className="chips" role="radiogroup" aria-label="Предмет">
-            {SUBJECTS.map((s) => (
+          <p className="fd__label">{t.subjectLabel}</p>
+          <div className="chips" role="radiogroup" aria-label={t.subjectLabel}>
+            {t.subjects.map((s, i) => (
               <button
-                key={s} type="button" role="radio" aria-checked={subject === s}
-                className={`chipbtn ${subject === s ? 'is-on' : ''}`}
-                disabled={locked} onClick={() => setSubject(s)}
+                key={s} type="button" role="radio" aria-checked={subjectIdx === i}
+                className={`chipbtn ${subjectIdx === i ? 'is-on' : ''}`}
+                disabled={locked} onClick={() => setSubjectIdx(i)}
               >{s}</button>
             ))}
           </div>
 
           <div className="fd__actions">
             {phase === 'idle' && (
-              <button className="btn btn--primary" onClick={() => setPhase('running')}><Play size={16} /> Начать сессию</button>
+              <button className="btn btn--primary" onClick={() => setPhase('running')}><Play size={16} /> {t.start}</button>
             )}
             {phase === 'running' && (
               <>
-                <button className="btn btn--primary" onClick={() => setPhase('paused')}><Pause size={16} /> Пауза</button>
-                <button className="btn btn--ghost" onClick={() => setPhase('away')}><EyeOff size={16} /> Свернуть приложение</button>
+                <button className="btn btn--primary" onClick={() => setPhase('paused')}><Pause size={16} /> {t.pause}</button>
+                <button className="btn btn--ghost" onClick={() => setPhase('away')}><EyeOff size={16} /> {t.away}</button>
               </>
             )}
             {(phase === 'paused' || phase === 'away') && (
               <>
-                <button className="btn btn--primary" onClick={() => setPhase('running')}><Play size={16} /> Продолжить</button>
-                <button className="btn btn--ghost" onClick={reset}><RotateCcw size={16} /> Сначала</button>
+                <button className="btn btn--primary" onClick={() => setPhase('running')}><Play size={16} /> {t.resume}</button>
+                <button className="btn btn--ghost" onClick={reset}><RotateCcw size={16} /> {t.restart}</button>
               </>
             )}
             {phase === 'done' && (
-              <button className="btn btn--ghost" onClick={reset}><RotateCcw size={16} /> Ещё раз</button>
+              <button className="btn btn--ghost" onClick={reset}><RotateCcw size={16} /> {t.again}</button>
             )}
           </div>
         </div>
       </div>
 
       <div className={`fd__status is-${phase}`} aria-live="polite">
-        {phase === 'idle' && <>Выбери длительность и предмет, затем начни сессию.</>}
-        {phase === 'running' && <>Идёт сессия · {subject}. Засчитано {counted} мин · <Coin size={14} /> +{counted}</>}
-        {phase === 'paused' && <>Пауза. Засчитано {counted} мин.</>}
-        {phase === 'away' && <><EyeOff size={15} /> Ты вышел из приложения — пока тебя нет, время не засчитывается.</>}
-        {phase === 'done' && <>Сессия засчитана: {minutes} мин · {subject} · <Coin size={14} /> +{minutes} монет</>}
+        {phase === 'idle' && <>{t.idle}</>}
+        {phase === 'running' && <WithCoin parts={t.running(subject, counted)} />}
+        {phase === 'paused' && <>{t.paused(counted)}</>}
+        {phase === 'away' && <><EyeOff size={15} />{t.awayMsg}</>}
+        {phase === 'done' && <WithCoin parts={t.done(minutes, subject)} />}
       </div>
     </div>
   );
+}
+
+/** Строка статуса с монетой посередине: parts = [до монеты, после монеты]. */
+function WithCoin({ parts }) {
+  return <>{parts[0]}<Coin size={14} />{parts[1]}</>;
 }
 
 /* =========================================================
@@ -139,16 +146,17 @@ const FROZEN = 24;
 const STREAK_FROM = 18;
 
 export function StreakCalendar() {
+  const { demos: { calendar: t } } = useT();
   const offset = 3; // 1 октября 2026 — четверг
   const cells = [...Array(offset).fill(null), ...Array.from({ length: 31 }, (_, i) => i + 1)];
   return (
     <div className="card card--cal">
       <div className="cal__head">
-        <strong>Октябрь 2026</strong>
-        <span className="pill pill--flame"><Flame size={14} /> серия 14 дней</span>
+        <strong>{t.month}</strong>
+        <span className="pill pill--flame"><Flame size={14} /> {t.streak}</span>
       </div>
-      <div className="cal__grid" role="grid" aria-label="Календарь занятий за октябрь">
-        {['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map((d) => <span key={d} className="cal__dow">{d}</span>)}
+      <div className="cal__grid" role="grid" aria-label={t.aria}>
+        {t.dow.map((d) => <span key={d} className="cal__dow">{d}</span>)}
         {cells.map((d, i) => {
           if (!d) return <span key={`e${i}`} />;
           const frozen = d === FROZEN;
@@ -158,7 +166,7 @@ export function StreakCalendar() {
             <span
               key={d}
               className={`cal__d ${studied ? 'is-study' : ''} ${frozen ? 'is-frozen' : ''} ${inStreak ? 'is-streak' : ''}`}
-              title={frozen ? 'Заморозка серии' : studied ? 'День с учёбой' : 'Без занятий'}
+              title={frozen ? t.frozen : studied ? t.study : t.none}
             >
               {frozen ? <Snowflake size={13} /> : d}
             </span>
@@ -166,8 +174,8 @@ export function StreakCalendar() {
         })}
       </div>
       <div className="cal__legend">
-        <span><i className="lg lg--study" /> день с учёбой</span>
-        <span><i className="lg lg--frozen" /> заморозка спасла серию</span>
+        <span><i className="lg lg--study" /> {t.legendStudy}</span>
+        <span><i className="lg lg--frozen" /> {t.legendFrozen}</span>
       </div>
     </div>
   );
@@ -179,12 +187,13 @@ const MILESTONES = [
 ];
 
 export function StreakTrack({ current = 14 }) {
+  const { demos: { track: t } } = useT();
   return (
-    <ol className="track" aria-label="Награды за серию дней">
+    <ol className="track" aria-label={t.aria}>
       {MILESTONES.map((m) => (
         <li key={m.d} className={current >= m.d ? 'is-got' : ''}>
           <span className="track__dot">{current >= m.d ? <Check size={14} /> : <Flame size={14} />}</span>
-          <strong>{m.d} {m.d === 3 ? 'дня' : 'дней'}</strong>
+          <strong>{t.days(m.d)}</strong>
           <span className="track__coins"><Coin size={13} /> {m.c}</span>
         </li>
       ))}
@@ -228,29 +237,25 @@ function Drawn({ v }) {
   );
 }
 
-const FRAMES = [
-  { id: 'none', label: 'Без рамки' },
-  { id: 'classic', label: 'Классика' },
-  { id: 'gold', label: 'Золото' },
-  { id: 'rays', label: 'Озарение' },
-  { id: 'dash', label: 'Пунктир' },
-];
+// Подписи рамок, цветов и значков — в словаре (demos.studio.frames/colors/badgeNames).
+const FRAMES = ['none', 'classic', 'gold', 'rays', 'dash'];
 const COLORS = [
-  { id: 'teal', label: 'Бирюзовый', v: '#01A9A9' },
-  { id: 'ink', label: 'Глубокий', v: '#0B4F52' },
-  { id: 'sun', label: 'Солнечный', v: '#F2A93B' },
-  { id: 'coral', label: 'Коралловый', v: '#E9685A' },
-  { id: 'sky', label: 'Небесный', v: '#5B7FD6' },
-  { id: 'plum', label: 'Сливовый', v: '#8E5BC9' },
+  { id: 'teal', v: '#01A9A9' },
+  { id: 'ink', v: '#0B4F52' },
+  { id: 'sun', v: '#F2A93B' },
+  { id: 'coral', v: '#E9685A' },
+  { id: 'sky', v: '#5B7FD6' },
+  { id: 'plum', v: '#8E5BC9' },
 ];
 const BADGES = [
-  { id: 'streak', label: 'Серия 30', Icon: Flame },
-  { id: 'focus', label: 'Фокус-мастер', Icon: Zap },
-  { id: 'helper', label: 'Помогает группе', Icon: Award },
-  { id: 'star', label: 'Ранняя пташка', Icon: Star },
+  { id: 'streak', Icon: Flame },
+  { id: 'focus', Icon: Zap },
+  { id: 'helper', Icon: Award },
+  { id: 'star', Icon: Star },
 ];
 
 export function AvatarStudio() {
+  const { demos: { studio: t } } = useT();
   const [mode, setMode] = useState('emoji');
   const [emoji, setEmoji] = useState('🦊');
   const [drawn, setDrawn] = useState(0);
@@ -269,59 +274,57 @@ export function AvatarStudio() {
         <div className={`studio__ava frame--${frame}`}>
           <span className="studio__face">{mode === 'emoji' ? emoji : <Drawn v={drawn} />}</span>
         </div>
-        <strong className="studio__name">Аня Морозова</strong>
-        <span className="studio__user">@anya.m · 10 «Б»</span>
+        <strong className="studio__name">{t.name}</strong>
+        <span className="studio__user">{t.user}</span>
         <div className="studio__badges">
-          {badges.length === 0 && <span className="studio__nobadge">значки не выбраны</span>}
-          {BADGES.filter((b) => badges.includes(b.id)).map(({ id, label, Icon }) => (
-            <span key={id} className="badge"><Icon size={12} /> {label}</span>
+          {badges.length === 0 && <span className="studio__nobadge">{t.noBadges}</span>}
+          {BADGES.filter((b) => badges.includes(b.id)).map(({ id, Icon }) => (
+            <span key={id} className="badge"><Icon size={12} /> {t.badgeNames[id]}</span>
           ))}
         </div>
         <div className="studio__stats">
-          <div><b>14</b><span>серия</span></div>
-          <div><b>2 310</b><span>мин за месяц</span></div>
-          <div><b>1 240</b><span>монет</span></div>
+          {t.stats.map(([v, l]) => <div key={l}><b>{v}</b><span>{l}</span></div>)}
         </div>
       </div>
 
       <div className="studio__opts">
-        <div className="seg seg--switch" role="tablist" aria-label="Тип аватара">
-          <button role="tab" aria-selected={mode === 'emoji'} className={mode === 'emoji' ? 'is-on' : ''} onClick={() => setMode('emoji')}>40 эмодзи</button>
-          <button role="tab" aria-selected={mode === 'drawn'} className={mode === 'drawn' ? 'is-on' : ''} onClick={() => setMode('drawn')}>Рисованные</button>
+        <div className="seg seg--switch" role="tablist" aria-label={t.typeAria}>
+          <button role="tab" aria-selected={mode === 'emoji'} className={mode === 'emoji' ? 'is-on' : ''} onClick={() => setMode('emoji')}>{t.emojiTab}</button>
+          <button role="tab" aria-selected={mode === 'drawn'} className={mode === 'drawn' ? 'is-on' : ''} onClick={() => setMode('drawn')}>{t.drawnTab}</button>
         </div>
 
         {mode === 'emoji' ? (
-          <div className="emoji-grid" role="radiogroup" aria-label="Эмодзи-аватар">
+          <div className="emoji-grid" role="radiogroup" aria-label={t.emojiAria}>
             {EMOJI.map((e) => (
               <button key={e} role="radio" aria-checked={emoji === e} className={emoji === e ? 'is-on' : ''} onClick={() => setEmoji(e)}>{e}</button>
             ))}
           </div>
         ) : (
-          <div className="drawn-grid" role="radiogroup" aria-label="Рисованный аватар">
+          <div className="drawn-grid" role="radiogroup" aria-label={t.drawnAria}>
             {[0, 1, 2, 3, 4, 5].map((v) => (
-              <button key={v} role="radio" aria-checked={drawn === v} aria-label={`Аватар ${v + 1}`} className={drawn === v ? 'is-on' : ''} onClick={() => setDrawn(v)}><Drawn v={v} /></button>
+              <button key={v} role="radio" aria-checked={drawn === v} aria-label={t.avatarN(v + 1)} className={drawn === v ? 'is-on' : ''} onClick={() => setDrawn(v)}><Drawn v={v} /></button>
             ))}
           </div>
         )}
 
-        <p className="opt__label">Рамка <span className="shop-tag"><Coin size={12} /> магазин</span></p>
+        <p className="opt__label">{t.frame} <span className="shop-tag"><Coin size={12} /> {t.shop}</span></p>
         <div className="chips">
-          {FRAMES.map((f) => (
-            <button key={f.id} className={`chipbtn ${frame === f.id ? 'is-on' : ''}`} aria-pressed={frame === f.id} onClick={() => setFrame(f.id)}>{f.label}</button>
+          {FRAMES.map((id) => (
+            <button key={id} className={`chipbtn ${frame === id ? 'is-on' : ''}`} aria-pressed={frame === id} onClick={() => setFrame(id)}>{t.frames[id]}</button>
           ))}
         </div>
 
-        <p className="opt__label">Цвет профиля <span className="shop-tag"><Coin size={12} /> магазин</span></p>
+        <p className="opt__label">{t.color} <span className="shop-tag"><Coin size={12} /> {t.shop}</span></p>
         <div className="swatches">
           {COLORS.map((c) => (
-            <button key={c.id} aria-label={c.label} aria-pressed={color === c.id} className={color === c.id ? 'is-on' : ''} style={{ background: c.v }} onClick={() => setColor(c.id)} />
+            <button key={c.id} aria-label={t.colors[c.id]} aria-pressed={color === c.id} className={color === c.id ? 'is-on' : ''} style={{ background: c.v }} onClick={() => setColor(c.id)} />
           ))}
         </div>
 
-        <p className="opt__label">Значки <span className="opt__hint">до трёх</span> <span className="shop-tag"><Coin size={12} /> магазин</span></p>
+        <p className="opt__label">{t.badges} <span className="opt__hint">{t.upTo3}</span> <span className="shop-tag"><Coin size={12} /> {t.shop}</span></p>
         <div className="chips">
-          {BADGES.map(({ id, label, Icon }) => (
-            <button key={id} className={`chipbtn ${badges.includes(id) ? 'is-on' : ''}`} aria-pressed={badges.includes(id)} onClick={() => toggleBadge(id)}><Icon size={13} /> {label}</button>
+          {BADGES.map(({ id, Icon }) => (
+            <button key={id} className={`chipbtn ${badges.includes(id) ? 'is-on' : ''}`} aria-pressed={badges.includes(id)} onClick={() => toggleBadge(id)}><Icon size={13} /> {t.badgeNames[id]}</button>
           ))}
         </div>
       </div>
