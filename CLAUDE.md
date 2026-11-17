@@ -29,13 +29,16 @@ A promo landing page for StudyCrew, a study app for school and university studen
 - Sign in with `npx cf auth login`. Node 22.18+ is required; this machine has Node 26.
 
 ## Current status (2026-11-17)
-- Node.js is installed. `npm ci`, the build and `cf auth login` have all succeeded on this Windows PC. The old Vite-version files were moved to the Recycle Bin.
-- **The site is NOT deployed yet.** The first deploy failed with "You need to register a workers.dev subdomain". The user must register one once at `dash.cloudflare.com → Workers & Pages` (onboarding). Then run `setup\redeploy.cmd` or `npm run deploy`.
-- No GitHub repository exists yet, and git is not installed on this PC.
-- Next steps after the first deploy:
-  1. Install git.
-  2. Create a GitHub repo and push.
-  3. Add the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets.
+- Node.js is installed. `npm ci`, the build and `cf auth login` have all succeeded on this Windows PC.
+- **The site is live** at https://studycrew-site.studycrew-app.workers.dev (the account's workers.dev subdomain is `studycrew-app`).
+- **Auto-deploy works.** Every merge into `main` builds the site and deploys it through GitHub Actions (first confirmed with PR #4). The `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets are set. The user manages them; Claude never types or prints tokens. Manual deploys are no longer needed. If one is ever required, run `npm run build` first, because `setup\redeploy.cmd` uploads the existing build without rebuilding.
+- **GitHub:** public repo `vekslermikhail-alt/studycrew-site`. git and the GitHub CLI (`gh`) were installed with winget. In Claude's PowerShell, reload `PATH` from the registry before calling them. Commits use the GitHub noreply email, not the user's personal address.
+- **`main` is protected** by the "Protect main" ruleset: changes go in only through pull requests; force-push and deletion are blocked; nobody can bypass it. Never push to `main` directly. Work on a branch and open a PR.
+- **Collaborator:** SusGoing (write access).
+- `store-assets/` holds Google Play graphics: a feature graphic (1024×500, no alpha) and a 512×512 icon. They are not used by the site.
+- `app/layout.tsx` sets `metadataBase` to the workers.dev URL, Open Graph and Twitter `summary_large_image` metadata with `public/og.png` (1200×630), and a per-page canonical (`alternates.canonical: './'`).
+- The "Квартира группы" section still shows the CSS mockup (`ApartmentScene` in `components/Screens.jsx`) with the caption «Квартира группы в приложении». The real apartment is 3D. Replace the mockup with screenshots or a short video from the app once the user sends them.
+- The texts of `/privacy`, `/rules` and `/delete-account` are agreed with the app. Don't change them unless the user asks.
 
 ## Notes
 - vinext and `cf` are beta, so check current docs before changing the deploy setup:
