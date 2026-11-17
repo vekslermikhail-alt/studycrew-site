@@ -29,13 +29,13 @@ A promo landing page for StudyCrew, a study app for school and university studen
 - Sign in with `npx cf auth login`. Node 22.18+ is required; this machine has Node 26.
 
 ## Current status (2026-11-17)
-- Node.js is installed. `npm ci`, the build and `cf auth login` have all succeeded on this Windows PC. The old Vite-version files were moved to the Recycle Bin.
-- **The site is NOT deployed yet.** The first deploy failed with "You need to register a workers.dev subdomain". The user must register one once at `dash.cloudflare.com → Workers & Pages` (onboarding). Then run `setup\redeploy.cmd` or `npm run deploy`.
-- No GitHub repository exists yet, and git is not installed on this PC.
-- Next steps after the first deploy:
-  1. Install git.
-  2. Create a GitHub repo and push.
-  3. Add the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets.
+- Node.js is installed. `npm ci`, the build and `cf auth login` have all succeeded on this Windows PC.
+- **The site is live** at https://studycrew-site.studycrew-app.workers.dev (the account's workers.dev subdomain is `studycrew-app`). The first deploy was a manual `setup\redeploy.cmd` of the 2026-11-03 build.
+- **GitHub:** public repo `vekslermikhail-alt/studycrew-site`. git and the GitHub CLI (`gh`) were installed with winget. In Claude's PowerShell, reload `PATH` from the registry before calling them. Commits use the GitHub noreply email, not the user's personal address.
+- **`main` is protected** by the "Protect main" ruleset: changes go in only through pull requests; force-push and deletion are blocked; nobody can bypass it. Never push to `main` directly. Work on a branch and open a PR.
+- **Collaborator:** SusGoing (write access).
+- **Not done yet:** the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets. Until they are added, the deploy job on `main` fails. The user adds them; Claude never types or prints tokens.
+- `store-assets/` (added in PR #1, branch `feature/store-assets`) holds Google Play graphics (feature graphic 1024×500 and icon 512×512). `public/og.png` (1200×630) exists but is not wired into `app/layout.tsx`.
 
 ## Notes
 - vinext and `cf` are beta, so check current docs before changing the deploy setup:
