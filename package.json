@@ -1,0 +1,41 @@
+{
+  "name": "studycrew-site",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "vinext-cloudflare deploy",
+    "deploy:dry-run": "vinext-cloudflare deploy --dry-run",
+    "cf:types": "cf workers types",
+    "dev:next": "next dev",
+    "build:next": "next build"
+  },
+  "dependencies": {
+    "@fontsource/manrope": "^5.3.0",
+    "@fontsource/unbounded": "^5.3.0",
+    "@vinext/cloudflare": "^1.3.1",
+    "lucide-react": "^1.66.0",
+    "next": "^16.4.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-server-dom-webpack": "^19.3.1",
+    "vinext": "^1.4.1"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^2.0.0-beta.v.10",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.2.1",
+    "@vitejs/plugin-rsc": "^0.5.38",
+    "cf": "^1.0.0-beta.27",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  }
+}
