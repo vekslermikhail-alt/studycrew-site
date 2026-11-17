@@ -519,6 +519,38 @@ section[id] { scroll-margin-top: 80px; }
 .ftr__nav a:hover { color: #fff; text-decoration: underline; }
 .ftr__fine { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; margin-top: 40px; padding-top: 22px; border-top: 1px solid rgba(255, 255, 255, .14); font-size: 14px; color: #8fb9b5; }
 
+/* ---------- квартира группы (концепт) ---------- */
+.apt { width: 100%; max-width: 440px; background: #fff; border-radius: var(--r-lg); padding: 16px; box-shadow: var(--shadow); }
+.apt__head { display: flex; justify-content: flex-end; margin-bottom: 12px; }
+.apt__room { position: relative; height: 300px; border-radius: var(--r); overflow: hidden; background: linear-gradient(180deg, var(--mint) 0 62%, var(--sun-soft) 62% 100%); }
+.apt__sign { position: absolute; left: 50%; top: 16px; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; background: var(--teal-900); color: #fff; font-size: 13px; padding: 7px 12px; border-radius: 12px; white-space: nowrap; }
+.apt__sign em { font-style: normal; font-weight: 800; font-size: 11px; background: var(--teal); padding: 2px 8px; border-radius: 99px; }
+.apt__table { position: absolute; left: 50%; top: 128px; width: 190px; height: 70px; transform: translateX(-50%); background: #d9a96a; border-radius: 50%; box-shadow: 0 8px 0 #b98650; }
+.apt__who { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.apt__who small { font-size: 11px; font-weight: 800; color: var(--teal-900); background: rgba(255, 255, 255, .85); padding: 1px 7px; border-radius: 99px; }
+.apt__who--a { left: 14%; top: 86px; }
+.apt__who--b { right: 14%; top: 86px; }
+.apt__who--c { left: 12%; bottom: 16px; }
+.apt__who--d { right: 14%; bottom: 16px; }
+.apt__bubble { position: absolute; bottom: 100%; left: 0; margin-bottom: 4px; white-space: nowrap; background: #fff; box-shadow: var(--shadow-sm); font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 12px 12px 12px 3px; }
+
+/* ---------- юридические страницы ---------- */
+.legal { padding: 40px 0 90px; }
+.legal__back { display: inline-block; margin-bottom: 18px; font-weight: 700; color: var(--teal-700); text-decoration: none; }
+.legal__back:hover { text-decoration: underline; }
+.legal__doc { background: #fff; border-radius: var(--r-lg); padding: 36px 40px 40px; box-shadow: var(--shadow-sm); margin-bottom: 28px; }
+.legal__doc h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.5rem, 3vw, 2.1rem); line-height: 1.2; color: var(--teal-900); letter-spacing: -.02em; }
+.legal__enhead { font-family: var(--font-display); font-size: 1.15rem; color: var(--teal); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+.legal__doc h2:not(.legal__enhead) { font-size: 1.15rem; font-weight: 800; margin: 1.9em 0 .4em; color: var(--teal-700); }
+.legal__doc p, .legal__doc li { font-size: 16.5px; }
+.legal__doc p { margin-top: .7em; }
+.legal__doc ol, .legal__doc ul { margin: .7em 0 0; padding-left: 1.3em; display: grid; gap: .4em; }
+.legal__doc a { color: var(--teal-700); }
+.legal__doc .legal__meta, .legal__meta { color: var(--muted); font-size: 14.5px; }
+.legal__nav a { white-space: nowrap; }
+@media (max-width: 900px) { .legal__nav { display: none; } }
+@media (max-width: 640px) { .legal__doc { padding: 24px 20px 28px; } }
+
 /* ---------- появление при скролле ---------- */
 .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1); transition-delay: var(--d, 0ms); }
 .reveal.is-in { opacity: 1; transform: none; }

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import {
   Flame, Pause, Camera, Check, LifeBuoy, Hourglass, Share2, Send, Smile,
-  ShieldCheck, ThumbsUp, Heart, Search, UserPlus, Crown, Target,
+  ShieldCheck, ThumbsUp, Heart, Search, UserPlus, Crown, Target, Timer,
 } from 'lucide-react';
 import { Coin, Avatar } from './Phone.jsx';
 
@@ -298,6 +298,36 @@ export function ChallengeCard() {
       <div className="ch__foot">
         <span className="legend"><i className="lg-me" /> Твой вклад: 310 мин</span>
         <span className="pill pill--coin"><Coin size={13} /> +20 каждому</span>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Квартира группы (концепт) ---------- */
+export function ApartmentScene() {
+  return (
+    <div className="apt" role="img" aria-label="Концепт: квартира группы с аватарами-зверями">
+      <div className="apt__head">
+        <span className="pill pill--coin"><Coin size={14} /> Очки группы</span>
+      </div>
+      <div className="apt__room">
+        <div className="apt__sign">
+          <Timer size={14} /> <b>Алгебра · 17:42</b><em>Войти</em>
+        </div>
+        <div className="apt__table" />
+        <div className="apt__who apt__who--a">
+          <span className="apt__bubble">Кто сделал №5?</span>
+          <Avatar tone="amber" size={44}>🦊</Avatar><small>учится</small>
+        </div>
+        <div className="apt__who apt__who--b">
+          <Avatar tone="teal" size={44}>🐼</Avatar><small>учится</small>
+        </div>
+        <div className="apt__who apt__who--c">
+          <Avatar tone="soft" size={44}>🐰</Avatar><small>отдыхает</small>
+        </div>
+        <div className="apt__who apt__who--d">
+          <Avatar tone="amber" size={44}>🐱</Avatar><small>онлайн</small>
+        </div>
       </div>
     </div>
   );

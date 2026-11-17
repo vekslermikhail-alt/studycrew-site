@@ -12,7 +12,7 @@ import { BETA_URL, CONTACT_EMAIL } from '../config.js';
 import { Phone, Coin } from './Phone.jsx';
 import {
   FocusScreen, GroupScreen, ChatScreen, ReportScreen, LeaderboardScreen,
-  FriendSearch, ChallengeCard,
+  FriendSearch, ChallengeCard, ApartmentScene,
 } from './Screens.jsx';
 import { FocusDemo, StreakCalendar, StreakTrack, AvatarStudio } from './Demos.jsx';
 
@@ -22,6 +22,7 @@ const logoMark = '/logo-mark-white.png';
 const NAV = [
   ['#groups', 'Группы'],
   ['#focus', 'Фокус'],
+  ['#apartment', 'Квартира'],
   ['#friends', 'Друзья'],
   ['#coins', 'Монеты'],
   ['#safety', 'Безопасность'],
@@ -57,6 +58,7 @@ export default function LandingPage() {
         <Pillars />
         <Groups />
         <Focus />
+        <Apartment />
         <Friends />
         <Coins />
         <Safety />
@@ -290,6 +292,12 @@ function Focus() {
             <Feature Icon={CalendarDays} title="Серия дней и календарь">
               Календарь показывает дни с учёбой, а за серии в 3, 7, 14, 30, 60 и 100 дней дают награды.
             </Feature>
+            <Feature Icon={DoorOpen} title="Комнаты для учёбы">
+              Общий таймер для группы: видно, кто сейчас учится.
+            </Feature>
+            <Feature Icon={Bell} title="Push-уведомления">
+              Напоминания о домашках и новых сообщениях в чате. Каждый вид можно отключить в профиле.
+            </Feature>
             <Feature Icon={Snowflake} title="Заморозка серии">
               Если пропустишь день, купленная за монеты заморозка сохранит серию.
             </Feature>
@@ -302,6 +310,40 @@ function Focus() {
             <h3>Награды за серию</h3>
             <p>Занимайся каждый день — и получай монеты за каждую новую отметку. Каждая награда даётся один раз.</p>
             <StreakTrack current={14} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Apartment() {
+  return (
+    <section className="sec" id="apartment">
+      <div className="wrap">
+        <SectionHead
+          eyebrow="Квартира группы"
+          title="Уютная 3D-квартира для вашей группы"
+          lead="У каждой группы есть своя квартира: участники появляются в ней в виде зверей-аватаров, и сразу видно, кто учится, отдыхает или просто онлайн."
+        />
+        <div className="split">
+          <div className="split__feats">
+            <Feature Icon={Users} title="Кто чем занят">
+              Видно, кто сейчас учится, отдыхает или в сети.
+            </Feature>
+            <Feature Icon={Timer} title="Учебная комната над столом">
+              Табличка над столом показывает активную учебную комнату с таймером и названием. Нажми, чтобы присоединиться.
+            </Feature>
+            <Feature Icon={MessageCircle} title="Сообщения-пузыри">
+              Сообщения чата всплывают пузырями над участниками.
+            </Feature>
+            <Feature Icon={Trophy} title="Очки группы">
+              Группа вместе зарабатывает очки и тратит их на новые комнаты и мебель, которую можно расставлять по местам.
+            </Feature>
+          </div>
+          <div className="split__visual reveal">
+            <ApartmentScene />
+            <p className="tryme">Концепт квартиры группы</p>
           </div>
         </div>
       </div>
@@ -438,11 +480,9 @@ function Safety() {
 
 function Soon() {
   const items = [
-    { Icon: Bell, t: 'Push-уведомления' },
     { Icon: LayoutGrid, t: 'Виджет серии на экране телефона' },
     { Icon: ListChecks, t: 'Планировщик с домашками групп' },
     { Icon: UserCircle, t: 'Своё фото в профиле' },
-    { Icon: DoorOpen, t: 'Комнаты для совместной учёбы' },
     { Icon: ImagePlus, t: 'Фото к просьбе о помощи' },
   ];
   return (
@@ -545,6 +585,9 @@ function Footer() {
         </div>
         <nav className="ftr__nav" aria-label="Разделы в подвале">
           {NAV.map(([href, label]) => <a key={href} href={href}>{label}</a>)}
+          <a href="/privacy">Конфиденциальность</a>
+          <a href="/rules">Правила</a>
+          <a href="/delete-account">Удаление аккаунта</a>
           {CONTACT_EMAIL && <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>}
         </nav>
       </div>

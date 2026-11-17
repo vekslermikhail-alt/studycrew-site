@@ -5,4 +5,4 @@
 export const BETA_URL = '';
 
 // Почта для связи (например, hello@studycrew.app)
-export const CONTACT_EMAIL = '';
+export const CONTACT_EMAIL = 'studycrewcompany@gmail.com';
