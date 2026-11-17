@@ -21,6 +21,11 @@ export function LegalPage({ title, updated, ru, en, enTitle }) {
           <nav className="hdr__nav legal__nav" aria-label="Юридические страницы">
             {LEGAL_LINKS.map(([href, label]) => <Link key={href} href={href}>{label}</Link>)}
           </nav>
+          {/* Английский оригинал уже на этой же странице — EN ведёт к нему. */}
+          <div className="lang lang--legal" role="group" aria-label="Язык / Language">
+            <span className="is-on" aria-current="page" lang="ru">RU</span>
+            <a href="#en" hrefLang="en" lang="en">EN</a>
+          </div>
         </div>
       </header>
       <main className="legal">

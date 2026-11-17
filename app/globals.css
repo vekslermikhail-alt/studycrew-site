@@ -637,3 +637,24 @@ section[id] { scroll-margin-top: 80px; }
 }
 
 .board-ctl { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+/* ---------- переключатель языка RU / EN ---------- */
+.lang { display: inline-flex; flex: none; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); font-weight: 700; font-size: 13px; letter-spacing: .02em; }
+.lang a, .lang span { display: inline-flex; align-items: center; justify-content: center; min-width: 34px; height: 28px; padding: 0 8px; border-radius: 999px; text-decoration: none; color: var(--muted); }
+.lang a:hover { background: var(--mint); color: var(--teal-900); }
+.lang .is-on { background: var(--teal); color: #fff; }
+.lang a:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+@media (max-width: 1180px) {
+  .hdr__in { gap: 14px; }
+}
+@media (max-width: 960px) {
+  .hdr .lang:not(.lang--legal) { margin-left: auto; }
+  .hdr__cta { margin-left: 0; }
+}
+@media (max-width: 960px) {
+  .lang--legal { margin-left: auto; }
+}
+@media (max-width: 640px) {
+  .hdr__burger { margin-left: 0; }
+}
