@@ -30,12 +30,15 @@ A promo landing page for StudyCrew, a study app for school and university studen
 
 ## Current status (2026-11-17)
 - Node.js is installed. `npm ci`, the build and `cf auth login` have all succeeded on this Windows PC.
-- **The site is live** at https://studycrew-site.studycrew-app.workers.dev (the account's workers.dev subdomain is `studycrew-app`). The first deploy was a manual `setup\redeploy.cmd` of the 2026-11-03 build.
+- **The site is live** at https://studycrew-site.studycrew-app.workers.dev (the account's workers.dev subdomain is `studycrew-app`).
+- **Auto-deploy works.** Every merge into `main` builds the site and deploys it through GitHub Actions (first confirmed with PR #4). The `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets are set. The user manages them; Claude never types or prints tokens. Manual deploys are no longer needed. If one is ever required, run `npm run build` first, because `setup\redeploy.cmd` uploads the existing build without rebuilding.
 - **GitHub:** public repo `vekslermikhail-alt/studycrew-site`. git and the GitHub CLI (`gh`) were installed with winget. In Claude's PowerShell, reload `PATH` from the registry before calling them. Commits use the GitHub noreply email, not the user's personal address.
 - **`main` is protected** by the "Protect main" ruleset: changes go in only through pull requests; force-push and deletion are blocked; nobody can bypass it. Never push to `main` directly. Work on a branch and open a PR.
 - **Collaborator:** SusGoing (write access).
-- **Not done yet:** the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets. Until they are added, the deploy job on `main` fails. The user adds them; Claude never types or prints tokens.
-- `store-assets/` (added in PR #1, branch `feature/store-assets`) holds Google Play graphics (feature graphic 1024×500 and icon 512×512). `public/og.png` (1200×630) exists but is not wired into `app/layout.tsx`.
+- `store-assets/` holds Google Play graphics: a feature graphic (1024×500, no alpha) and a 512×512 icon. They are not used by the site.
+- `app/layout.tsx` sets `metadataBase` to the workers.dev URL, Open Graph and Twitter `summary_large_image` metadata with `public/og.png` (1200×630), and a per-page canonical (`alternates.canonical: './'`).
+- The "Квартира группы" section still shows the CSS mockup (`ApartmentScene` in `components/Screens.jsx`) with the caption «Квартира группы в приложении». The real apartment is 3D. Replace the mockup with screenshots or a short video from the app once the user sends them.
+- The texts of `/privacy`, `/rules` and `/delete-account` are agreed with the app. Don't change them unless the user asks.
 
 ## Notes
 - vinext and `cf` are beta, so check current docs before changing the deploy setup:
