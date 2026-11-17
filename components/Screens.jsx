@@ -303,10 +303,10 @@ export function ChallengeCard() {
   );
 }
 
-/* ---------- Квартира группы (концепт) ---------- */
+/* ---------- Квартира группы (CSS-макет; заменить скриншотами из приложения) ---------- */
 export function ApartmentScene() {
   return (
-    <div className="apt" role="img" aria-label="Концепт: квартира группы с аватарами-зверями">
+    <div className="apt" role="img" aria-label="Квартира группы с аватарами-зверями">
       <div className="apt__head">
         <span className="pill pill--coin"><Coin size={14} /> Очки группы</span>
       </div>
