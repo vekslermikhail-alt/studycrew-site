@@ -23,8 +23,8 @@ const logoMark = '/logo-mark-white.png';
 // Порядок и якоря разделов; подписи — в словаре (common.nav).
 const NAV = ['groups', 'focus', 'apartment', 'friends', 'coins', 'safety', 'faq'];
 
-// Адрес главной для каждого языка.
-const HOME = { ru: '/', en: '/en' };
+// Адрес главной для каждого языка: английская — по умолчанию.
+const HOME = { en: '/', ru: '/ru' };
 
 function useReveal() {
   useEffect(() => {
@@ -108,7 +108,7 @@ function LangSwitch() {
   };
   return (
     <div className="lang" role="group" aria-label={t.common.langAria}>
-      {['ru', 'en'].map((l) => (l === t.lang ? (
+      {['en', 'ru'].map((l) => (l === t.lang ? (
         <span key={l} className="is-on" aria-current="page" lang={l}>{l.toUpperCase()}</span>
       ) : (
         <a key={l} href={HOME[l]} hrefLang={l} lang={l} onClick={go(l)}>{l.toUpperCase()}</a>

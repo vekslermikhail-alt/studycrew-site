@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from 'next';
 
 export const SITE_URL = 'https://studycrew-site.studycrew-app.workers.dev';
 
-// hreflang для главной: русская версия — основная (x-default).
-export const LANGUAGES = { ru: '/', en: '/en', 'x-default': '/' };
+// hreflang для главной: английская версия — основная (x-default).
+export const LANGUAGES = { en: '/', ru: '/ru', 'x-default': '/' };
 
 type Lang = 'ru' | 'en';
 
@@ -62,7 +62,7 @@ export function baseMetadata(lang: Lang): Metadata {
 /** Метаданные главной: свой canonical и hreflang на обе версии. */
 export function homeMetadata(lang: Lang): Metadata {
   return {
-    alternates: { canonical: lang === 'ru' ? '/' : '/en', languages: LANGUAGES },
+    alternates: { canonical: lang === 'en' ? '/' : '/ru', languages: LANGUAGES },
   };
 }
 
