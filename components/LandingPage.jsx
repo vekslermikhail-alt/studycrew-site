@@ -343,7 +343,7 @@ function Apartment() {
           </div>
           <div className="split__visual reveal">
             <ApartmentScene />
-            <p className="tryme">Концепт квартиры группы</p>
+            <p className="tryme">Квартира группы в приложении</p>
           </div>
         </div>
       </div>

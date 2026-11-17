@@ -17,21 +17,41 @@ import '@fontsource/manrope/cyrillic-800.css';
 import '@fontsource/manrope/latin-800.css';
 import './globals.css';
 
+const SITE_URL = 'https://studycrew-site.studycrew-app.workers.dev';
+const title = 'StudyCrew — учиться вместе интереснее';
 const description =
   'StudyCrew — приложение для школьников и студентов: учебные группы с общими домашками, честный таймер фокуса, монеты за учёбу, серии дней и челленджи с друзьями.';
+const ogImage = {
+  url: '/og.png',
+  width: 1200,
+  height: 630,
+  alt: 'StudyCrew — учиться вместе интереснее',
+};
 
 export const metadata: Metadata = {
-  title: 'StudyCrew — учиться вместе интереснее',
+  metadataBase: new URL(SITE_URL),
+  title,
   description,
+  // './' — canonical каждой страницы указывает на её собственный адрес.
+  alternates: { canonical: './' },
   icons: {
     icon: '/favicon.png',
     apple: '/apple-touch-icon.png',
   },
   openGraph: {
-    title: 'StudyCrew — учиться вместе интереснее',
+    title,
     description,
+    url: './',
+    siteName: 'StudyCrew',
     type: 'website',
     locale: 'ru_RU',
+    images: [ogImage],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title,
+    description,
+    images: [ogImage],
   },
 };
 
